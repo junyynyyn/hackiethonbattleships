@@ -1,57 +1,50 @@
 import random
-X = []
+# Constants
+
+
+# Global State Variables
+hits = []
+targeted = [0,0]
+# State 0 = Neutral, 1 = Hit, 2 = Hunt
+state = 0
 
 def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
-    global X 
-    if (p1PrevHit):
-        X.append(p1ShotSeq[-1])
-    print(X)
+    # Bring in global variables
+    global hits, targeted, state
 
-    FollowThrough(p1PrevHit,p1ShotSeq,enemyHp)
+    # If Previous hit
+    if (p1PrevHit):
+        # Save previous hit
+        hits.append(p1ShotSeq[-1])
+        # Change state to cross check
+        if (state == 0):
+            state = 1
+            targeted = p1ShotSeq[-1]
+    
+    # Neutral State
+    if (state == 0):
+        pass
+    # Hit State
+    elif (state == 1):
+        crossCheck(targeted)
+    # Hunt State
+    elif (state == 2):
+        pass
 
     x = random.randint(1, 10)
     y = random.randint(1, 10)
     return [x,y]
 
-# Will target areas in a straight line or around a point
-def FollowThrough(prevHit, shotSeq, enemyHp):
-    # Targeting: Up Right Down Left
-
-    # Get previous shot sequences up to 4
-    if (enemyHp >= 5):
-        prevShots = shotSeq[-5:]
-    else:
-        prevShots = shotSeq[-enemyHp:]
-
-    lineLength = 0
-    isLineCheck = False
-    if len(prevShots) >= 2:
-        for i in range(len(prevShots)):
-            if (isLine(prevShots[-i:])):
-                lineLength = i
-                isLineCheck = True
-                break
-    # If Hit:
-    if (prevHit):
-        # If previous shot sequences are in a line
-        
-        if (isLineCheck):
-            # Fire at end of line (next slot)
-            pass
-        # Else fire upwards
-        else:
-
-            target_shot = prevShots[-1]
-            target_shot[1] -= 1;
-            return target_shot
-
-    # If Miss
-    # If previous shot sequences are in a line fire on opposite side
-
-    # Else
-        # Find next sequence in a cross to fire at
-
-    pass
+# return a coordinate by scanning targeted point clockwise
+def crossCheck(coords, shotSeq):
+    global hits
+    check_coords = [[0,-1],[1,0],[0,1],[-1,0]]
+    for check in check_coords:
+        target_coords = coords
+        target_coords[0] += check[0]
+        target_coords[1] += check[1]
+        if target_coords not in shotSeq:
+            return target_coords
 
 # def getValidShot(shot, shotSeq):
 
