@@ -23,27 +23,15 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
         # Change state to hit
         if (state == 0):
             state = 1
-            print("State Change to Hit, Circling Fire")
             targeted = p1ShotSeq[-1]
         # Change state to hunt and set hunt direction
         elif (state == 1):
             state = 2
-            print("State Change to Hunt")
-            print(hits)
             getHitDirection()
-            if (hunt_state == 0):
-                print("North")
-            elif (hunt_state == 1):
-                print("Right")
-            elif (hunt_state == 2):
-                print("Down")
-            elif (hunt_state == 3):
-                print("Right")
     else:
         # If miss
         if (state == 2):
             # If hunting
-            print("State Change to Hunt - Reverse")
             # Turn around
             hunt_state = (hunt_state + 2) % 4
             state = 3
@@ -67,17 +55,17 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
             state = 0
     # Hunt State
     elif (state >= 2):
-        to_hit = huntTargeting(targeted)
-        if (to_hit in p1ShotSeq):
-            to_hit = huntTargeting(to_hit)
+        next_hit = huntTargeting(targeted, p1ShotSeq)
+        if (next_hit != None):
+            to_hit = next_hit
+        else:
+            state = 0
 
-
-    while not isValidShot(to_hit, p1ShotSeq):
+    if not isValidShot(to_hit, p1ShotSeq):
         x = 5
         y = 5
         to_hit = [x,y]
-    print("Aiming At")
-    print(to_hit)
+    
     return to_hit
 
 def isOutsideBoundaries(shot):
@@ -108,8 +96,22 @@ def hitTargeting(coords, shotSeq):
             return target_coords
     return None
 
-def huntTargeting(coords):
-    global hits, hunt_state
+def huntTargeting(coords, shotSeq):
+    global state, hunt_state
+    while (not isValidShot(coords, shotSeq)):
+        coords = huntStep(coords)
+        print(coords)
+        if (isOutsideBoundaries(coords)):
+            if (state == 2):
+                hunt_state = (hunt_state + 2) % 4
+                state = 3
+            else:
+                return None
+    return coords
+    
+
+def huntStep(coords):
+    global hunt_state
     target = coords.copy()
     target[0] += relative[hunt_state][0]
     target[1] += relative[hunt_state][1]
@@ -122,8 +124,6 @@ def getHitDirection():
     direction[1] -= hits[-1][1]
 
     hunt_state = relative.index(direction)
-
-
 
 if __name__ == "__main__":
     hunt_state = 3

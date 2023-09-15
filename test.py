@@ -214,4 +214,4 @@ print("Enemy shots: \n",p2ShotSeq,"\n")
 
 df = pd.DataFrame(p1ShotSeq, columns=["X","Y"])
 df.plot(kind="scatter",x="X",y="Y")
-# plt.show()
+plt.show()
