@@ -129,7 +129,7 @@ def eliminatecandidate(shotSeq):
 
     if latestShot in cM_Center:
         candidateMap.remove(latestShot)
-    return 
+    return
     
 
 
