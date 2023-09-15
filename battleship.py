@@ -23,16 +23,20 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
     
     # Neutral State
     if (state == 0):
-        pass
+        x = random.randint(1, 10)
+        y = random.randint(1, 10)
     # Hit State
     elif (state == 1):
-        crossCheck(targeted)
+        next_hit = crossCheck(targeted, p1ShotSeq)
+        if (next_hit):
+            return next_hit
+        else:
+            # Return to neutral fire
+            pass
     # Hunt State
     elif (state == 2):
         pass
 
-    x = random.randint(1, 10)
-    y = random.randint(1, 10)
     return [x,y]
 
 # return a coordinate by scanning targeted point clockwise
@@ -45,6 +49,7 @@ def crossCheck(coords, shotSeq):
         target_coords[1] += check[1]
         if target_coords not in shotSeq:
             return target_coords
+    return None
 
 # def getValidShot(shot, shotSeq):
 
