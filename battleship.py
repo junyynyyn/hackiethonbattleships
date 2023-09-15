@@ -1,89 +1,130 @@
 import random
 # Constants
-
+relative = [[0,-1],[1,0],[0,1],[-1,0]]
 
 # Global State Variables
 hits = []
 targeted = [0,0]
-# State 0 = Neutral, 1 = Hit, 2 = Hunt
+# State 0 = Neutral, 1 = Hit, 2 = Hunt, 3 = Hunt turn around
 state = 0
+# Hunt State 0 = Up, 1 = Right, 2 = Down, 3 = Left
+hunt_state = 0
 
 def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
     # Bring in global variables
-    global hits, targeted, state
+    global hits, targeted, state, hunt_state
+
+    to_hit = [0, 0]
 
     # If Previous hit
     if (p1PrevHit):
         # Save previous hit
         hits.append(p1ShotSeq[-1])
-        # Change state to cross check
+        # Change state to hit
         if (state == 0):
             state = 1
+            print("State Change to Hit, Circling Fire")
             targeted = p1ShotSeq[-1]
+        # Change state to hunt and set hunt direction
+        elif (state == 1):
+            state = 2
+            print("State Change to Hunt")
+            print(hits)
+            getHitDirection()
+            if (hunt_state == 0):
+                print("North")
+            elif (hunt_state == 1):
+                print("Right")
+            elif (hunt_state == 2):
+                print("Down")
+            elif (hunt_state == 3):
+                print("Right")
+    else:
+        # If miss
+        if (state == 2):
+            # If hunting
+            print("State Change to Hunt - Reverse")
+            # Turn around
+            hunt_state = (hunt_state + 2) % 4
+            state = 3
+        elif (state == 3):
+            # If finished hunting revert back to neutral state
+            state = 0
+        
+        
     
     # Neutral State
     if (state == 0):
         x = random.randint(1, 10)
         y = random.randint(1, 10)
+        to_hit = [x,y]
     # Hit State
     elif (state == 1):
-        next_hit = crossCheck(targeted, p1ShotSeq)
-        if (next_hit):
-            return next_hit
+        next_hit = hitTargeting(targeted, p1ShotSeq)
+        if (next_hit != None):
+            to_hit = next_hit
         else:
-            # Return to neutral fire
-            pass
+            state = 0
     # Hunt State
-    elif (state == 2):
-        pass
+    elif (state >= 2):
+        to_hit = huntTargeting(targeted)
+        if (to_hit in p1ShotSeq):
+            to_hit = huntTargeting(to_hit)
 
-    return [x,y]
+
+    while not isValidShot(to_hit, p1ShotSeq):
+        x = 5
+        y = 5
+        to_hit = [x,y]
+    print("Aiming At")
+    print(to_hit)
+    return to_hit
+
+def isOutsideBoundaries(shot):
+    for i in range(2):
+        if (shot[i] < 1 or shot[i] > 10):
+            return True
+
+def isValidShot(shot, shotSeq):
+    if (isOutsideBoundaries(shot)):
+        return False
+    if shot in shotSeq:
+        return False
+    return True
+
+# Neutral target state
+def neutralTargeting():
+    pass
 
 # return a coordinate by scanning targeted point clockwise
-def crossCheck(coords, shotSeq):
-    global hits
+def hitTargeting(coords, shotSeq):
     check_coords = [[0,-1],[1,0],[0,1],[-1,0]]
     for check in check_coords:
-        target_coords = coords
+        target_coords = coords.copy()
         target_coords[0] += check[0]
         target_coords[1] += check[1]
-        if target_coords not in shotSeq:
+        
+        if isValidShot(target_coords, shotSeq):
             return target_coords
     return None
 
-# def getValidShot(shot, shotSeq):
+def huntTargeting(coords):
+    global hits, hunt_state
+    target = coords.copy()
+    target[0] += relative[hunt_state][0]
+    target[1] += relative[hunt_state][1]
+    return target
+
+def getHitDirection():
+    global hits, hunt_state
+    direction = hits[-2].copy()
+    direction[0] -= hits[-1][0]
+    direction[1] -= hits[-1][1]
+
+    hunt_state = relative.index(direction)
 
 
-def getNextShotInLine(shotSeq):
-    check_coords = [[0,-1],[1,0],[0,1],[-1,0]]
-    for check in check_coords:
-        if (isLine(shotSeq)):
-            shot = shotSeq[-1]
-            shot[0] += check[0]
-            shot[1] += check[1]
-            return shot
-
-# Returns true if a shot sequence is a uninterrupted line
-def isLine(shotSeq):
-    currentShot = shotSeq[-1]
-    # Up Right Down Left
-    check_coords = [[0,-1],[1,0],[0,1],[-1,0]]
-    line = False
-    for check in check_coords:
-        currentShot = shotSeq[-1]
-        line = True
-        for shot in range(len(shotSeq)-1):
-            check_x = shotSeq[shot][0] + check[0]
-            check_y = shotSeq[shot][1] + check[1]
-            shot_check = [check_x, check_y]
-            if shotSeq[shot+1] != shot_check:
-                line = False
-                break
-
-        if line == True:
-            break
-    
-    return line
 
 if __name__ == "__main__":
-    print("Hello World")
+    hunt_state = 3
+    print(huntTargeting([1,1]))

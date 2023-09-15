@@ -1,7 +1,6 @@
 import importlib
 import random
-import streamlit as st
-import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
 
 def putShipOnMap(shipCoor, pMap):
@@ -212,3 +211,7 @@ print("Enemy HP: ",enemyHp)
 print("Your shots: \n",p1ShotSeq,"\n")
 
 print("Enemy shots: \n",p2ShotSeq,"\n")
+
+df = pd.DataFrame(p1ShotSeq, columns=["X","Y"])
+df.plot(kind="scatter",x="X",y="Y")
+# plt.show()
