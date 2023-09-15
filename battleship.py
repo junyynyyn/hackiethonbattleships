@@ -21,6 +21,8 @@ candidateMap = [[(2,1),(4,1),(6,1),(8,1),(10,1)],
                 [(2,9),(4,9),(6,9),(8,9),(10,9)],
                 [(1,10),(3,10),(5,10),(7,10),(9,10)]]
 
+cM_Center = [(5,4),(7,4),(4,5),(6,5),(5,6),(7,6),(4,7),(6,7)]
+
 
 
 
@@ -105,21 +107,29 @@ def isLine(shotSeq):
 
 
 # in neutral state, using algorithm to give a new shot efficiently here.
-def neutralState(candidateMap):
-    x = random.randint(1, 10)
-    y = random.randint(1, 10)
-
-    while (x, y) not in candidateMap:
+def neutralState(cM_Center):
+    #ramdomly choice
+    '''while (x, y) not in candidateMap:
         x = random.randint(1, 10)
         y = random.randint(1, 10)
-        return [x, y]
+        return [x, y]'''
+
+    #choose from center
+    if cM_Center != []:
+        (x, y) = random.choice(cM_Center)
+        return (x, y)
+    
     
 #eliminate latest shot coordiate from candidateMap
 def eliminatecandidate(shotSeq):
-    global candidateMap
-    if shotSeq[-1] in candidateMap:
-        candidateMap.remove(shotSeq[-1])
-    return candidateMap
+    global candidateMap, cM_Center
+    latestShot = shotSeq[-1]
+    if latestShot in candidateMap:
+        candidateMap.remove(latestShot)
+
+    if latestShot in cM_Center:
+        candidateMap.remove(latestShot)
+    return 
     
 
 
