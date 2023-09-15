@@ -3,6 +3,9 @@ import random
 import streamlit as st
 import numpy as np
 import pandas as pd
+import battleship
+
+
 
 def putShipOnMap(shipCoor, pMap):
     '''
@@ -44,7 +47,7 @@ def convertMapIndToInt(index, mapRow, mapCol):
 file directories
 ================
 '''
-p1Script = "Battleship"
+p1Script = "battleship"
 p2Script = "EnemyAi"
 
 #dynamically import the module
