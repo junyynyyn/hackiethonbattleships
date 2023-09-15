@@ -41,9 +41,9 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
         
     
     
-    # Neutral State
-    if (state == 0): #ここでランダム関数返すからここでやる
-        [x, y] = neutralState(candidateMap)
+    # Neutral State, as first step, start from center
+    if (state == 0):
+        (x, y) = neutralState(cM_Center)
 
     # Hit State
     elif (state == 1):
@@ -109,10 +109,14 @@ def isLine(shotSeq):
 # in neutral state, using algorithm to give a new shot efficiently here.
 def neutralState(cM_Center):
     #ramdomly choice
-    '''while (x, y) not in candidateMap:
+    x = random.randint(1, 10)
+    y = random.randint(1, 10)
+
+
+    while (x, y) not in candidateMap:
         x = random.randint(1, 10)
         y = random.randint(1, 10)
-        return [x, y]'''
+        return (x, y)
 
     #choose from center
     if cM_Center != []:
@@ -128,7 +132,7 @@ def eliminatecandidate(shotSeq):
         candidateMap.remove(latestShot)
 
     if latestShot in cM_Center:
-        candidateMap.remove(latestShot)
+        cM_Center.remove(cM_Center)
     return
     
 
