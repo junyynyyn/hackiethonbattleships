@@ -23,18 +23,17 @@ candidateMap = [[(2,1),(4,1),(6,1),(8,1),(10,1)],
                 [(2,9),(4,9),(6,9),(8,9),(10,9)],
                 [(1,10),(3,10),(5,10),(7,10),(9,10)]]
 
+
 cM_Center = [(5,4),(7,4),(4,5),(6,5),(5,6),(7,6),(4,7),(6,7)]
 cM_2ndCenter = [(4,3),(6,3),(8,3),(8,5),(8,7),(3,8),(5,8),(7,8),(3,4),(3,6)]
 cM_3rdCenter = [(3,2),(5,2),(7,2),(9,2),(2,9),(4,9),(6,9),(8,9),(2,3),(2,5),(2,7),(9,4),(9,6),(9,8)]
 cM_FinalCenter = [(2,1),(4,1),(6,1),(8,1),(10,1),(1,2),(1,4),(1,6),(1,8),(1,10),(3,10),(5,10),(7,10),(9,10),(10,3),(10,5),(10,7),(10,9)]
 
 
-def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
+def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit, p1storage):
     # Bring in global variables
     global hits, targeted, state, hunt_state
-
     to_hit = [0, 0]
-
     # If Previous hit
     if (p1PrevHit):
         # Save previous hit
@@ -58,12 +57,11 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
         elif (state == 3):
             # If finished hunting revert back to neutral state
             state = 0
-        
-        
     
     # Neutral State
     if (state == 0):
-        to_hit = neutralState(candidateMap)
+        to_hit =neutralState(cM_Center, cM_2ndCenter, cM_3rdCenter, cM_FinalCenter)
+
 
     # Hit State
     elif (state == 1):
@@ -82,9 +80,8 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
             state = 0
 
     if not isValidShot(to_hit, p1ShotSeq):
-        neutralState(candidateMap)
-    
-    return to_hit
+        to_hit = neutralState(cM_Center, candidateMap)
+    return to_hit, p1storage
 
 def isOutsideBoundaries(shot):
     for i in range(2):
@@ -100,7 +97,9 @@ def isValidShot(shot, shotSeq):
 
 # Neutral target state
 def neutralTargeting():
-    pass
+    x = random.randint(1, 10)
+    y = random.randint(1, 10)
+    return [x,y]
 
 # return a coordinate by scanning targeted point clockwise
 def hitTargeting(coords, shotSeq):
@@ -145,22 +144,23 @@ def getHitDirection():
 
 
 
+
 ''' in neutral state, using algorithm to give a new shot efficiently here.
  as first step, start hitting from center, and once finish all center coodinate, 
  then broaden the scope we hit'''
-def neutralState(cM_Center):
+def neutralState(cM_Center, cM_2ndCenter, cM_3rdCenter, cM_FinalCenter):
     #ramdomly choice
     x = random.randint(1, 10)
     y = random.randint(1, 10)
 
-
-    while (x, y) not in candidateMap:
+    while (x,y) not in candidateMap:
         x = random.randint(1, 10)
         y = random.randint(1, 10)
-        return (x, y)
+        return [x,y]
 
     #first step, choose from center
     if cM_Center != []:
+
         (x, y) = random.choice(cM_Center)
         return (x, y)
 
@@ -173,9 +173,8 @@ def neutralState(cM_Center):
         return (x,y)
     
     else:
-        (x, y) = random.choice(cM_3rdCenter)
+        (x, y) = random.choice(cM_FinalCenter)
         return (x,y)
-
     
 
     
@@ -199,12 +198,6 @@ def eliminatecandidate(shotSeq):
     if latestShot in cM_FinalCenter:
         cM_FinalCenter.remove(latestShot)
     return
-    
-
-
-
-
-
 
 
 if __name__ == "__main__":

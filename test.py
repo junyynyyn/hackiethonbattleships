@@ -2,9 +2,6 @@ import importlib
 import random
 import matplotlib.pyplot as plt
 import pandas as pd
-import battleship
-
-
 
 def putShipOnMap(shipCoor, pMap):
     '''
@@ -60,6 +57,8 @@ mapCols = 10
 yourHp = sum(shipSizeArr)   # 1 five block, 2 three block, 2 two block
 enemyHp = sum(shipSizeArr)    
 round = 1 
+p1Storage =[]
+p2Storage =[]
 
  # -------------------------------------------------------------- #
     #               Ship Positions/Coordinates                       #
@@ -117,7 +116,7 @@ while yourHp > 0 or enemyHp > 0:
     #-------------------------------------#
 
     # Assume we storing every coord a ship is covering 
-    p1Bomb = p1.ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit)
+    p1Bomb,p1Storage = p1.ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit,p1Storage)
     # convert coord from [1-10] to [0-9]
     bombX = p1Bomb[0]-1
     bombY = p1Bomb[1]-1
@@ -157,7 +156,7 @@ while yourHp > 0 or enemyHp > 0:
     #               Player 2              # 
     #-------------------------------------#
     
-    p2Bomb = p2.ShipLogic(round, enemyMap, enemyHp, yourHp, p2ShotSeq, p2PrevHit)
+    p2Bomb, p2Storage = p2.ShipLogic(round, enemyMap, enemyHp, yourHp, p2ShotSeq, p2PrevHit, p2Storage)
     # convert coord from [1-10] to [0-9]
     bombX = p2Bomb[0]-1
     bombY = p2Bomb[1]-1
@@ -192,9 +191,6 @@ while yourHp > 0 or enemyHp > 0:
         p2Hit.append(0)         # bomb no hit 
         enemyValidBomb.remove(convertMapIndToInt((bombX,bombY), mapRows, mapCols)) # still remove coord (in Integer form) from valid moves arr
 
-
-
-
 '''
 ==========================================================
 
@@ -211,7 +207,7 @@ if enemyHp > 0:
     print("YOU LOSE")
 print("Your HP: ",yourHp)
 print("Enemy HP: ",enemyHp)
-print("Your shots: \n",p1ShotSeq,"\n")
+print("Your shots: \n",yourMap,"\n")
 
 print("Enemy shots: \n",p2ShotSeq,"\n")
 
