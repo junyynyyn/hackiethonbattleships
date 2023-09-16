@@ -40,7 +40,7 @@ def convertMapIndToInt(index, mapRow, mapCol):
 file directories
 ================
 '''
-p1Script = "Battleship"
+p1Script = "battleship"
 p2Script = "EnemyAi"
 
 #dynamically import the module
