@@ -31,7 +31,8 @@ def getShipPos():
     
     tpose_layout = []
 
-    choose = random.randint(10)
+    choose = random.randint(0, 10)
+    print(choose)
     if (choose <= 6):
         return possible_layout1
     else:
@@ -45,3 +46,6 @@ def getShipPos():
     #             [(0,9), (1,9), (2,9)], 
     #             [(5,9), (6,9)]]
     return smiley_layout
+
+if __name__ == "__main__":
+    print(getShipPos())

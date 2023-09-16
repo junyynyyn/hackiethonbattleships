@@ -141,9 +141,6 @@ def getHitDirection():
 
     hunt_state = relative.index(direction)
 
-
-
-
 ''' in neutral state, using algorithm to give a new shot efficiently here.
  as first step, start hitting from center, and once finish all center coodinate, 
  then broaden the scope we hit'''
@@ -196,8 +193,3 @@ def eliminatecandidate(shotSeq):
     if latestShot in cM_FinalCenter:
         cM_FinalCenter.remove(latestShot)
     return
-
-
-if __name__ == "__main__":
-    hunt_state = 3
-    print(huntTargeting([1,1]))
