@@ -138,7 +138,7 @@ while yourHp > 0 or enemyHp > 0:
         enemyMap[bombX][bombY] = -1
         round += 1 
         enemyHp -= 1
-        p1ShotSeq.append(p1Bomb)  # append shot 
+        p1ShotSeq.append(p1Bomb)  # appe`nd shot 
         p1Hit.append(1)           # util for front end to check if bomb hit  
         yourValidBomb.remove(convertMapIndToInt((bombX,bombY), mapRows, mapCols))  # remove coord (in Integer form) from valid moves arr
         if enemyHp == 0:
