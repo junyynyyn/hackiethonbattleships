@@ -117,7 +117,6 @@ def huntTargeting(coords, shotSeq):
     global state, hunt_state
     while (not isValidShot(coords, shotSeq)):
         coords = huntStep(coords)
-        print(coords)
         if (isOutsideBoundaries(coords)):
             if (state == 2):
                 hunt_state = (hunt_state + 2) % 4
