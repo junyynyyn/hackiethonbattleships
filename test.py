@@ -207,7 +207,7 @@ if enemyHp > 0:
     print("YOU LOSE")
 print("Your HP: ",yourHp)
 print("Enemy HP: ",enemyHp)
-print("Your shots: \n",yourMap,"\n")
+print("Your shots: \n",p1ShotSeq,"\n")
 
 print("Enemy shots: \n",p2ShotSeq,"\n")
 

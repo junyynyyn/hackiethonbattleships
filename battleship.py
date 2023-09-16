@@ -118,7 +118,6 @@ def huntTargeting(coords, shotSeq):
                 return None
     return coords
     
-
 def huntStep(coords):
     global hunt_state
     target = coords.copy()
@@ -150,7 +149,6 @@ def neutralState(cM_Center, candidateMap):
     if cM_Center != []:
         [x,y] = random.choice(cM_Center)
         return [x,y]
-    
     
 #eliminate latest shot coordiate from candidateMap
 def eliminatecandidate(shotSeq):
