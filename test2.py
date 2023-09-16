@@ -2,6 +2,7 @@ import importlib
 import random
 import matplotlib.pyplot as plt
 import pandas as pd
+import ShipPos as sp
 
 def putShipOnMap(shipCoor, pMap):
     '''
@@ -65,11 +66,7 @@ p2Storage =[]
     # -------------------------------------------------------------- #
     # Modify at your own risk ^.^
     # store every index/coord that the ship is covering, e.g. [(1,3), (1,4),(1,5)] for a ship of len 3. Each Coordinate must be 0-9. ([0-9], [0-9]).  
-p1ShipPos = [[(3,1), (4,1),(5,1)], 
-                [(2,1),(2,2),(2,3),(2,4),(2,5)], 
-                [(7,7),(8,7)] , 
-                [(0,9), (1,9), (2,9)], 
-                [(5,9), (6,9)]]
+p1ShipPos = sp.getShipPos()
 # Coordinates on the board:
 #           [[(2, 4), (2, 5), (2, 6)],
 #           [(2, 3), (3, 3), (4, 3), (5, 3), (6, 3)], 
@@ -77,11 +74,7 @@ p1ShipPos = [[(3,1), (4,1),(5,1)],
 #           [(10, 1), (10, 2), (10, 3)], 
 #           [(10, 6), (10, 7)]]
 
-p2ShipPos = [[(3,1), (4,1),(5,1)], 
-                [(2,1),(2,2),(2,3),(2,4),(2,5)], 
-                [(7,7),(8,7)] , 
-                [(0,9), (1,9), (2,9)], 
-                [(5,9), (6,9)]]
+p2ShipPos = sp.getShipPos()
 # Coordinates on the board:
 #           [[(4, 2), (5, 2), (6, 2)],
 #           [(3, 2), (3, 3), (3, 4), (3, 5), (3, 6)], 
