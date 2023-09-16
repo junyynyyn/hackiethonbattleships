@@ -1,6 +1,9 @@
 # hackiethonbattleships
 HackMelbourne 2023 Battleship Repository - Team ... --- ...
-
+CONFIRMATION: We are an officially registered team for Hackiethon 2023
+Jun Yeo - #7698746839
+Rafael Sitorus - #7709849699
+ichika Abe - #7596713179
 
 POV: Finishing an 8-hr code session w/ no sleep for the playoffs
 
