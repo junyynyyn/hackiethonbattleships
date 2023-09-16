@@ -1,5 +1,8 @@
 import importlib
 import random
+import matplotlib.pyplot as plt
+import pandas as pd
+
 def putShipOnMap(shipCoor, pMap):
     '''
     Util func to put 2's into player maps 
@@ -40,7 +43,7 @@ def convertMapIndToInt(index, mapRow, mapCol):
 file directories
 ================
 '''
-p1Script = "Battleship"
+p1Script = "battleship"
 p2Script = "EnemyAi"
 
 #dynamically import the module
@@ -135,7 +138,7 @@ while yourHp > 0 or enemyHp > 0:
         enemyMap[bombX][bombY] = -1
         round += 1 
         enemyHp -= 1
-        p1ShotSeq.append(p1Bomb)  # append shot 
+        p1ShotSeq.append(p1Bomb)  # appe`nd shot 
         p1Hit.append(1)           # util for front end to check if bomb hit  
         yourValidBomb.remove(convertMapIndToInt((bombX,bombY), mapRows, mapCols))  # remove coord (in Integer form) from valid moves arr
         if enemyHp == 0:
@@ -188,9 +191,6 @@ while yourHp > 0 or enemyHp > 0:
         p2Hit.append(0)         # bomb no hit 
         enemyValidBomb.remove(convertMapIndToInt((bombX,bombY), mapRows, mapCols)) # still remove coord (in Integer form) from valid moves arr
 
-
-
-
 '''
 ==========================================================
 
@@ -207,6 +207,19 @@ if enemyHp > 0:
     print("YOU LOSE")
 print("Your HP: ",yourHp)
 print("Enemy HP: ",enemyHp)
-print("Your shots: \n",yourMap,"\n")
+print("Your shots: \n",p1ShotSeq,"\n")
 
 print("Enemy shots: \n",p2ShotSeq,"\n")
+
+df = pd.DataFrame(p1ShotSeq, columns=["X","Y"])
+df.plot(kind="scatter",x="X",y="Y")
+
+hits_coords = []
+for i in range(len(p1ShotSeq)):
+    if (p1Hit[i] != 0):
+        hits_coords.append(p1ShotSeq[i])
+
+hits = pd.DataFrame(hits_coords, columns=["X","Y"])
+hits.plot(kind="scatter",x="X",y="Y")
+
+plt.show()

@@ -23,11 +23,10 @@ candidateMap = [[(2,1),(4,1),(6,1),(8,1),(10,1)],
                 [(2,9),(4,9),(6,9),(8,9),(10,9)],
                 [(1,10),(3,10),(5,10),(7,10),(9,10)]]
 
-
-cM_Center = [(5,4),(7,4),(4,5),(6,5),(5,6),(7,6),(4,7),(6,7)]
-cM_2ndCenter = [(4,3),(6,3),(8,3),(8,5),(8,7),(3,8),(5,8),(7,8),(3,4),(3,6)]
-cM_3rdCenter = [(3,2),(5,2),(7,2),(9,2),(2,9),(4,9),(6,9),(8,9),(2,3),(2,5),(2,7),(9,4),(9,6),(9,8)]
-cM_FinalCenter = [(2,1),(4,1),(6,1),(8,1),(10,1),(1,2),(1,4),(1,6),(1,8),(1,10),(3,10),(5,10),(7,10),(9,10),(10,3),(10,5),(10,7),(10,9)]
+cM_Center = [[5,4],[7,4],[4,5],[6,5],[5,6],[7,6],[4,7],[6,7]]
+cM_2ndCenter = [[4,3],[6,3],[8,3],[8,5],[8,7],[3,8],[5,8],[7,8],[3,4],[3,6]]
+cM_3rdCenter = [[3,2],[5,2],[7,2],[9,2],[2,9],[4,9],[6,9],[8,9],[2,3],[2,5],[2,7],[9,4],[9,6],[9,8]]
+cM_FinalCenter = [[2,1],[4,1],[6,1],[8,1],[10,1],[1,2],[1,4],[1,6],[1,8],[1,10],[3,10],[5,10],[7,10],[9,10],[10,3],[10,5],[10,7],[10,9]]
 
 
 def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit, p1storage):
@@ -60,7 +59,7 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit, p1storage):
     
     # Neutral State
     if (state == 0):
-        to_hit =neutralState(cM_Center, cM_2ndCenter, cM_3rdCenter, cM_FinalCenter)
+        to_hit = neutralState(cM_Center, cM_2ndCenter, cM_3rdCenter, cM_FinalCenter)
 
 
     # Hit State
@@ -155,21 +154,19 @@ def neutralState(cM_Center, cM_2ndCenter, cM_3rdCenter, cM_FinalCenter):
 
     #first step, choose from center
     if cM_Center != []:
-
-        (x, y) = random.choice(cM_Center)
-        return (x, y)
+        out = random.choice(cM_Center)
+        return out
 
     elif cM_2ndCenter != []:
-        (x, y) = random.choice(cM_2ndCenter)
-        return (x,y)
+        out = random.choice(cM_2ndCenter)
+        return out
     
     elif cM_3rdCenter != []:
-        (x, y) = random.choice(cM_3rdCenter)
-        return (x,y)
-    
+        out = random.choice(cM_3rdCenter)
+        return out
     else:
-        (x, y) = random.choice(cM_FinalCenter)
-        return (x,y)
+        out = random.choice(cM_FinalCenter)
+        return out
     
 
     
