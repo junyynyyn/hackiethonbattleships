@@ -24,6 +24,10 @@ candidateMap = [[(2,1),(4,1),(6,1),(8,1),(10,1)],
                 [(1,10),(3,10),(5,10),(7,10),(9,10)]]
 
 cM_Center = [(5,4),(7,4),(4,5),(6,5),(5,6),(7,6),(4,7),(6,7)]
+cM_2ndCenter = [(4,3),(6,3),(8,3),(8,5),(8,7),(3,8),(5,8),(7,8),(3,4),(3,6)]
+cM_3rdCenter = [(3,2),(5,2),(7,2),(9,2),(2,9),(4,9),(6,9),(8,9),(2,3),(2,5),(2,7),(9,4),(9,6),(9,8)]
+cM_FinalCenter = [(2,1),(4,1),(6,1),(8,1),(10,1),(1,2),(1,4),(1,6),(1,8),(1,10),(3,10),(5,10),(7,10),(9,10),(10,3),(10,5),(10,7),(10,9)]
+
 
 def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
     # Bring in global variables
@@ -35,6 +39,7 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
     if (p1PrevHit):
         # Save previous hit
         hits.append(p1ShotSeq[-1])
+        eliminatecandidate(p1ShotSeq)
         # Change state to hit
         if (state == 0):
             state = 1
@@ -57,7 +62,7 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
         
     
     # Neutral State
-    if (state == 0): #ここでランダム関数返すからここでやる
+    if (state == 0):
         to_hit = neutralState(candidateMap)
 
     # Hit State
@@ -65,6 +70,7 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
         next_hit = hitTargeting(targeted, p1ShotSeq)
         if (next_hit != None):
             to_hit = next_hit
+
         else:
             state = 0
     # Hunt State
@@ -138,7 +144,10 @@ def getHitDirection():
     hunt_state = relative.index(direction)
 
 
-# in neutral state, using algorithm to give a new shot efficiently here.
+
+''' in neutral state, using algorithm to give a new shot efficiently here.
+ as first step, start hitting from center, and once finish all center coodinate, 
+ then broaden the scope we hit'''
 def neutralState(cM_Center):
     #ramdomly choice
     x = random.randint(1, 10)
@@ -150,58 +159,45 @@ def neutralState(cM_Center):
         y = random.randint(1, 10)
         return (x, y)
 
-    #choose from center
+    #first step, choose from center
     if cM_Center != []:
         (x, y) = random.choice(cM_Center)
         return (x, y)
+
+    elif cM_2ndCenter != []:
+        (x, y) = random.choice(cM_2ndCenter)
+        return (x,y)
+    
+    elif cM_3rdCenter != []:
+        (x, y) = random.choice(cM_3rdCenter)
+        return (x,y)
+    
+    else:
+        (x, y) = random.choice(cM_3rdCenter)
+        return (x,y)
+
+    
+
     
     
 #eliminate latest shot coordiate from candidateMap
 def eliminatecandidate(shotSeq):
-    global candidateMap, cM_Center
+    global candidateMap, cM_Center, cM_2ndCenter, cM_3rdCenter
     latestShot = shotSeq[-1]
     if latestShot in candidateMap:
         candidateMap.remove(latestShot)
 
     if latestShot in cM_Center:
-        candidateMap.remove(latestShot)
-    return
-    
+        cM_Center.remove(latestShot)
 
+    if latestShot in cM_2ndCenter:
+        cM_2ndCenter.remove(latestShot)
 
+    if latestShot in cM_3rdCenter:
+        cM_3rdCenter.remove(latestShot)
 
-
-
-
-
-
-# in neutral state, using algorithm to give a new shot efficiently here.
-def neutralState(cM_Center):
-    #ramdomly choice
-    x = random.randint(1, 10)
-    y = random.randint(1, 10)
-
-
-    while (x, y) not in candidateMap:
-        x = random.randint(1, 10)
-        y = random.randint(1, 10)
-        return (x, y)
-
-    #choose from center
-    if cM_Center != []:
-        (x, y) = random.choice(cM_Center)
-        return (x, y)
-    
-    
-#eliminate latest shot coordiate from candidateMap
-def eliminatecandidate(shotSeq):
-    global candidateMap, cM_Center
-    latestShot = shotSeq[-1]
-    if latestShot in candidateMap:
-        candidateMap.remove(latestShot)
-
-    if latestShot in cM_Center:
-        cM_Center.remove(cM_Center)
+    if latestShot in cM_FinalCenter:
+        cM_FinalCenter.remove(latestShot)
     return
     
 
