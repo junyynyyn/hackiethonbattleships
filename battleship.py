@@ -80,7 +80,7 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit, p1storage):
             state = 0
 
     if not isValidShot(to_hit, p1ShotSeq):
-        to_hit = neutralState(cM_Center, candidateMap)
+        to_hit = neutralState(cM_Center, cM_2ndCenter, cM_3rdCenter, cM_FinalCenter)
     return to_hit, p1storage
 
 def isOutsideBoundaries(shot):
