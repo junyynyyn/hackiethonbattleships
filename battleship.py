@@ -141,10 +141,14 @@ def getHitDirection():
 # in neutral state, using algorithm to give a new shot efficiently here.
 def neutralState(cM_Center):
     #ramdomly choice
-    '''while (x, y) not in candidateMap:
+    x = random.randint(1, 10)
+    y = random.randint(1, 10)
+
+
+    while (x, y) not in candidateMap:
         x = random.randint(1, 10)
         y = random.randint(1, 10)
-        return [x, y]'''
+        return (x, y)
 
     #choose from center
     if cM_Center != []:
@@ -174,10 +178,14 @@ def eliminatecandidate(shotSeq):
 # in neutral state, using algorithm to give a new shot efficiently here.
 def neutralState(cM_Center):
     #ramdomly choice
-    '''while (x, y) not in candidateMap:
+    x = random.randint(1, 10)
+    y = random.randint(1, 10)
+
+
+    while (x, y) not in candidateMap:
         x = random.randint(1, 10)
         y = random.randint(1, 10)
-        return [x, y]'''
+        return (x, y)
 
     #choose from center
     if cM_Center != []:
@@ -193,7 +201,7 @@ def eliminatecandidate(shotSeq):
         candidateMap.remove(latestShot)
 
     if latestShot in cM_Center:
-        candidateMap.remove(latestShot)
+        cM_Center.remove(cM_Center)
     return
     
 
