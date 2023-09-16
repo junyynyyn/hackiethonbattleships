@@ -26,21 +26,35 @@ def getShipPos():
                         [(0,0),(0,1)],
                         [(3,5),(3,6),(3,7)],
                         [(5,6),(5,7)]]
+    possible_layout3 = [[[(1,6),(1,7),(1,8)],
+                        [(9,2),(9,3),(9,4),(9,5),(9,6)],
+                        [(0,0),(0,1)],
+                        [(3,5),(3,6),(3,7)],
+                        [(5,6),(5,7)]]]
 
     smiley_layout = [[(4,2),(4,3),(4,4)],
                      [(3,8),(4,8),(5,8),(6,8),(7,8)],
                      [(2,6),(2,7)],
                      [(6,2),(6,3),(6,4)],
-                     [(8,6),(8,7)]]
+                     [(8,6),(8,7)]] 
     
-    tpose_layout = []
+    tpose_layout = [[(1,7),(2,7),(3,7)],
+                    [(4,2),(4,3),(4,4),(4,5),(4,6)],
+                    [(2,3),(3,3)],
+                    [(5,7),(6,7),(7,7)],
+                    [(5,3),(6,3)]]
 
-    choose = random.randint(0, 10)
+    choose = random.randint(0, 100)
     print(choose)
-    if (choose <= 6):
+    # 80% Chance proper layout
+    if (choose <= 80):
         return possible_layout1
-    else:
+    #20% Chance smiley face
+    elif (choose > 80 and choose < 100):
         return smiley_layout
+    # 1% Chance meme layout
+    else:
+        return tpose_layout
 
     # due to a bug we have the indexing of ships are 0-9
     
