@@ -10,6 +10,21 @@ state = 0
 # Hunt State 0 = Up, 1 = Right, 2 = Down, 3 = Left
 hunt_state = 0
 
+#create 10 by 10 map
+
+candidateMap = [[(2,1),(4,1),(6,1),(8,1),(10,1)], 
+                [(1,2),(3,2),(5,2),(7,2),(9,2)], 
+                [(2,3),(4,3),(6,3),(8,3),(10,3)],
+                [(1,4),(3,4),(5,4),(7,4),(9,4)],
+                [(2,5),(4,5),(6,5),(8,5),(10,5)],
+                [(1,6),(3,6),(5,6),(7,6),(9,6)],
+                [(2,7),(4,7),(6,7),(8,7),(10,7)],
+                [(1,8),(3,8),(5,8),(7,8),(9,8)],
+                [(2,9),(4,9),(6,9),(8,9),(10,9)],
+                [(1,10),(3,10),(5,10),(7,10),(9,10)]]
+
+cM_Center = [(5,4),(7,4),(4,5),(6,5),(5,6),(7,6),(4,7),(6,7)]
+
 def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
     # Bring in global variables
     global hits, targeted, state, hunt_state
@@ -42,10 +57,9 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
         
     
     # Neutral State
-    if (state == 0):
-        x = random.randint(1, 10)
-        y = random.randint(1, 10)
-        to_hit = [x,y]
+    if (state == 0): #ここでランダム関数返すからここでやる
+        to_hit = neutralState(candidateMap)
+
     # Hit State
     elif (state == 1):
         next_hit = hitTargeting(targeted, p1ShotSeq)
@@ -62,9 +76,7 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit):
             state = 0
 
     if not isValidShot(to_hit, p1ShotSeq):
-        x = 5
-        y = 5
-        to_hit = [x,y]
+        neutralState(candidateMap)
     
     return to_hit
 
@@ -124,6 +136,80 @@ def getHitDirection():
     direction[1] -= hits[-1][1]
 
     hunt_state = relative.index(direction)
+
+
+# in neutral state, using algorithm to give a new shot efficiently here.
+def neutralState(cM_Center):
+    #ramdomly choice
+    x = random.randint(1, 10)
+    y = random.randint(1, 10)
+
+
+    while (x, y) not in candidateMap:
+        x = random.randint(1, 10)
+        y = random.randint(1, 10)
+        return (x, y)
+
+    #choose from center
+    if cM_Center != []:
+        (x, y) = random.choice(cM_Center)
+        return (x, y)
+    
+    
+#eliminate latest shot coordiate from candidateMap
+def eliminatecandidate(shotSeq):
+    global candidateMap, cM_Center
+    latestShot = shotSeq[-1]
+    if latestShot in candidateMap:
+        candidateMap.remove(latestShot)
+
+    if latestShot in cM_Center:
+        candidateMap.remove(latestShot)
+    return
+    
+
+
+
+
+
+
+
+
+# in neutral state, using algorithm to give a new shot efficiently here.
+def neutralState(cM_Center):
+    #ramdomly choice
+    x = random.randint(1, 10)
+    y = random.randint(1, 10)
+
+
+    while (x, y) not in candidateMap:
+        x = random.randint(1, 10)
+        y = random.randint(1, 10)
+        return (x, y)
+
+    #choose from center
+    if cM_Center != []:
+        (x, y) = random.choice(cM_Center)
+        return (x, y)
+    
+    
+#eliminate latest shot coordiate from candidateMap
+def eliminatecandidate(shotSeq):
+    global candidateMap, cM_Center
+    latestShot = shotSeq[-1]
+    if latestShot in candidateMap:
+        candidateMap.remove(latestShot)
+
+    if latestShot in cM_Center:
+        cM_Center.remove(cM_Center)
+    return
+    
+
+
+
+
+
+
 
 if __name__ == "__main__":
     hunt_state = 3
