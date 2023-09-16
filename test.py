@@ -213,4 +213,13 @@ print("Enemy shots: \n",p2ShotSeq,"\n")
 
 df = pd.DataFrame(p1ShotSeq, columns=["X","Y"])
 df.plot(kind="scatter",x="X",y="Y")
+
+hits_coords = []
+for i in range(len(p1ShotSeq)):
+    if (p1Hit[i] != 0):
+        hits_coords.append(p1ShotSeq[i])
+
+hits = pd.DataFrame(hits_coords, columns=["X","Y"])
+hits.plot(kind="scatter",x="X",y="Y")
+
 plt.show()

@@ -179,7 +179,7 @@ def neutralState(cM_Center, cM_2ndCenter, cM_3rdCenter, cM_FinalCenter):
     
 #eliminate latest shot coordiate from candidateMap
 def eliminatecandidate(shotSeq):
-    global candidateMap, cM_Center, cM_2ndCenter, cM_3rdCenter
+    global candidateMap, cM_Center, cM_2ndCenter, cM_3rdCenter, cM_FinalCenter
     latestShot = shotSeq[-1]
     if latestShot in candidateMap:
         candidateMap.remove(latestShot)
