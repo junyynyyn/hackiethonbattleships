@@ -9,6 +9,8 @@ targeted = [0,0]
 state = 0
 # Hunt State 0 = Up, 1 = Right, 2 = Down, 3 = Left
 hunt_state = 0
+# Neutral State 0 = Inner, 1 = Middle, 2 = Outer, 3 = Edge
+neutral_target_state = 0
 
 #create 10 by 10 map
 
@@ -31,7 +33,7 @@ cM_FinalCenter = [[2,1],[4,1],[6,1],[8,1],[10,1],[1,2],[1,4],[1,6],[1,8],[1,10],
 
 def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit, p1storage):
     # Bring in global variables
-    global hits, targeted, state, hunt_state
+    global hits, targeted, state, hunt_state, neutral_target_state
     to_hit = [0, 0]
     # If Previous hit
     if (p1PrevHit):
@@ -42,6 +44,9 @@ def ShipLogic(round, yourMap, yourHp, enemyHp, p1ShotSeq, p1PrevHit, p1storage):
         if (state == 0):
             state = 1
             targeted = p1ShotSeq[-1]
+            neutral_target_state += 1
+            if (neutral_target_state > 3):
+                neutral_target_state = 0
         # Change state to hunt and set hunt direction
         elif (state == 1):
             state = 2
@@ -147,21 +152,16 @@ def neutralState(cM_Center, cM_2ndCenter, cM_3rdCenter, cM_FinalCenter):
     x = random.randint(1, 10)
     y = random.randint(1, 10)
 
-    while (x,y) not in candidateMap:
-        x = random.randint(1, 10)
-        y = random.randint(1, 10)
-        return [x,y]
-
     #first step, choose from center
-    if cM_Center != []:
+    if (cM_Center != [] and neutral_target_state == 0):
         out = random.choice(cM_Center)
         return out
 
-    elif cM_2ndCenter != []:
+    elif (cM_2ndCenter != [] and neutral_target_state == 1):
         out = random.choice(cM_2ndCenter)
         return out
     
-    elif cM_3rdCenter != []:
+    elif (cM_3rdCenter != [] and neutral_target_state == 2):
         out = random.choice(cM_3rdCenter)
         return out
     else:
