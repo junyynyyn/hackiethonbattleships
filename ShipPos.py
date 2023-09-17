@@ -48,7 +48,9 @@ def getShipPos():
     print(choose)
     # 80% Chance proper layout
     if (choose <= 80):
-        return possible_layout1
+        possible_layouts = [possible_layout1, possible_layout2, possible_layout3]
+        i = random.randint(0,3)
+        return possible_layouts[i]
     #20% Chance smiley face
     elif (choose > 80 and choose < 100):
         return smiley_layout
